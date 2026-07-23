@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Fianl-WTC/static/css/main.0440c2ef.css",
+    "main.js": "/Fianl-WTC/static/js/main.6c79f6d6.js",
+    "static/js/453.3fd71a55.chunk.js": "/Fianl-WTC/static/js/453.3fd71a55.chunk.js",
+    "static/media/home_room.png": "/Fianl-WTC/static/media/home_room.998b02901b0ecfc31b70.png",
+    "static/media/hak.png": "/Fianl-WTC/static/media/hak.7e5fe191c3e28b5eabeb.png",
+    "static/media/pin.png": "/Fianl-WTC/static/media/pin.65715eae539e84981e5f.png",
+    "static/media/github.png": "/Fianl-WTC/static/media/github.a323e8efefb4d485f4f7.png",
+    "static/media/telegram.png": "/Fianl-WTC/static/media/telegram.4737729e1d14d88ca0d7.png",
+    "static/media/phone-call.png": "/Fianl-WTC/static/media/phone-call.1dbfb7b25cc390268ca6.png",
+    "static/media/mail.png": "/Fianl-WTC/static/media/mail.7f0432c3a7d36f687c69.png",
+    "static/media/facebook.png": "/Fianl-WTC/static/media/facebook.b44fb76f9ff4a9d41378.png",
+    "index.html": "/Fianl-WTC/index.html",
+    "main.0440c2ef.css.map": "/Fianl-WTC/static/css/main.0440c2ef.css.map",
+    "main.6c79f6d6.js.map": "/Fianl-WTC/static/js/main.6c79f6d6.js.map",
+    "453.3fd71a55.chunk.js.map": "/Fianl-WTC/static/js/453.3fd71a55.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0440c2ef.css",
+    "static/js/main.6c79f6d6.js"
+  ]
+}
