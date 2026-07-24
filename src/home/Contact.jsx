@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 function Contact() {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ function Contact() {
     description: "",
   });
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const TELEGRAM_BOT_TOKEN =
     import.meta.env.VITE_TELEGRAM_BOT_TOKEN ||
@@ -50,37 +52,34 @@ function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      alert("Please login first to send a message.");
+      navigate("/login");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const currentUser = auth.currentUser;
-      let userRole = "guest";
-      let userName = formData.name || "Guest Account";
-      let userEmail = "N/A";
+      let userRole = "user";
+      let userName = formData.name || currentUser.displayName || currentUser.email.split("@")[0];
+      let userEmail = currentUser.email || "N/A";
 
-      if (currentUser) {
-        userEmail = currentUser.email || "N/A";
-        userName =
-          formData.name ||
-          currentUser.displayName ||
-          currentUser.email.split("@")[0];
-
-        // Role Name
-        const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-        if (userDoc.exists()) {
-          userRole = userDoc.data().role || "user";
-          if (userDoc.data().name && !formData.name) {
-            userName = userDoc.data().name;
-          }
+      const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+      if (userDoc.exists()) {
+        userRole = userDoc.data().role || "user";
+        if (userDoc.data().name && !formData.name) {
+          userName = userDoc.data().name;
         }
       }
 
-      // 1. Save contact submission to Firestore
       await addDoc(collection(db, "contacts"), {
         name: formData.name,
         subject: formData.subject,
         description: formData.description,
-        userId: currentUser ? currentUser.uid : "guest",
+        userId: currentUser.uid,
         userName: userName,
         userEmail: userEmail,
         userRole: userRole,
@@ -99,7 +98,6 @@ function Contact() {
 ${escapeHTML(formData.description)}
       `.trim();
 
-      // 3. Send message via Telegram Bot API
       const response = await fetch(
         `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`,
         {

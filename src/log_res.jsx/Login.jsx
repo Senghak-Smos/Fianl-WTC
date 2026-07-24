@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { auth, db } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp, collection, query, where, getDocs } from "firebase/firestore";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -27,6 +27,20 @@ function Login() {
       let userSnap = await getDoc(userDocRef);
 
       if (!userSnap.exists()) {
+        const q = query(collection(db, "users"), where("email", "==", user.email));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const existingDoc = querySnapshot.docs[0];
+          const existingData = existingDoc.data();
+
+          if (existingData.role === "admin") {
+            navigate("/admin");
+            setLoading(false);
+            return;
+          }
+        }
+
         const username = user.displayName || email.split("@")[0];
         await setDoc(userDocRef, {
           uid: user.uid,
@@ -34,7 +48,7 @@ function Login() {
           email: user.email,
           role: "user",
           createdAt: serverTimestamp(),
-        });
+        }, { merge: true });
         userSnap = await getDoc(userDocRef);
       }
 
@@ -54,7 +68,6 @@ function Login() {
         err.code === "auth/invalid-credential" ||
         err.code === "auth/invalid-email"
       ) {
-        // If user is not found, redirect automatically to Register
         navigate("/register", { state: { email, pass } });
       } else if (err.code === "auth/wrong-password") {
         setError("Incorrect password! Please try again.");
