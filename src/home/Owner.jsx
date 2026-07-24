@@ -7,7 +7,7 @@ import tel from "../image/telegram.png";
 
 function Owner() {
   return (
-    <div className="pt-24 pb-16 px-4">
+    <div className="pt-32 pb-16 px-4">
       <div className="text-center">
         <h1 className="font-adlam text-3xl sm:text-4xl">
           <u>Founder</u>
@@ -104,7 +104,7 @@ function Owner() {
             </span>
           </p>
         </div>
-      </div>
+      </div><br /><br /><br />
     </div>
   );
 }
